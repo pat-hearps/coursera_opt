@@ -4,7 +4,10 @@
 from collections import namedtuple
 from pprint import pformat
 
+from src.utils.directory import DIR
 from src.utils.log_config import get_logger
+
+DATA_DIR = DIR.ASSIGN.KNAPSACK_02 / "data"
 
 logger = get_logger(__name__)
 
@@ -67,10 +70,16 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
         file_location = sys.argv[1].strip()
-        with open(file_location, 'r') as input_data_file:
-            input_data = input_data_file.read()
         filename = file_location.split('/')[-1]
-        print(f"Result for {filename} =\n", solve_it(input_data))
+        
     else:
-        print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/ks_4_0)')
+        logger.info("Using default input file ks_4_0")
+        file_location = DATA_DIR / "ks_4_0"
+        filename = file_location.stem
+
+    with open(file_location, 'r') as input_data_file:
+        input_data = input_data_file.read()
+    
+    print(f"Result for {filename} =\n", solve_it(input_data))
+
 

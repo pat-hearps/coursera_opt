@@ -35,6 +35,9 @@ df_results.to_parquet(DIR.DATA.RESULTS / "results.parquet")
 DIR.SRC = DIR / "src"
 DIR.ASSIGN = DIR / "assignments"
 
+# assignment folders
+DIR.ASSIGN.KNAPSACK_02 = DIR.ASSIGN / "02_knapsack"
+
 # data folder with standard subfolders (should be gitignored)
 DIR.DATA = DIR / "data"
 DIR.DATA.LOGS = DIR.DATA / "logs"

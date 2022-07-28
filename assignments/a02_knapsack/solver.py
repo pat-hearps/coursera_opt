@@ -3,7 +3,7 @@
 
 from pprint import pformat
 
-from .schema import Item
+from assignments.a02_knapsack.schema import Item
 from src.utils.directory import DIR
 from src.utils.log_config import get_logger
 

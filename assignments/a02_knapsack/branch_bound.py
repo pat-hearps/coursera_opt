@@ -1,3 +1,6 @@
+import dataclasses as dc
+
+import pandas as pd
 
 from assignments.a02_knapsack.schema import Item
 from src.utils.log_config import get_logger
@@ -8,7 +11,10 @@ logger = get_logger(__name__, level="DEBUG")
 def depth_first(items: list[Item], capacity: int):
     ranked = rank_by_density(items)
     best_value, best_weight, taken = relaxed_integer(ranked, capacity)
-    logger.info(f"Best possible value with int->float relaxion: value={best_value}, weight={best_weight}")
+    logger.info(f"Best possible value with int->float relaxation: value={best_value}, weight={best_weight}")
+    
+    df = pd.DataFrame(list(map(dc.asdict, taken)))
+
     return ranked
 
 
@@ -33,7 +39,7 @@ def relaxed_integer(items: list[Item], capacity: int) -> int:
             logger.debug(f"Can only take {round(frac_to_take, 2)} fraction of item {itm}")
             best_weight += frac_to_take * itm.weight
             best_value += frac_to_take * itm.value
-            taken.append((frac_to_take, itm))
+            taken.append(itm)
             break
         
     return best_value, best_weight, taken

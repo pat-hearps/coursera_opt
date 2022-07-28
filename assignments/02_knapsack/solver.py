@@ -1,10 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from collections import namedtuple
-import dataclasses as dc
 from pprint import pformat
 
+from .schema import Item
 from src.utils.directory import DIR
 from src.utils.log_config import get_logger
 
@@ -12,15 +11,6 @@ DATA_DIR = DIR.ASSIGN.KNAPSACK_02 / "data"
 
 logger = get_logger(__name__)
 
-@dc.dataclass
-class Item():
-    index: int
-    value: int
-    weight: int
-    density: float = dc.field(init=False)
-
-    def __post_init__(self):
-        self.density = round(self.value / self.weight, 4)
 
 
 def solve_it(input_data):

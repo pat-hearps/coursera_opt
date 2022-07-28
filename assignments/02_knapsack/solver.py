@@ -16,6 +16,15 @@ def solve_it(input_data):
     capacity, items = parse_input(input_data)
     logger.info(f"Items:\n{pformat(items)}")
 
+    # run an algorithm to solve the problem, key work goes into this function
+    value, taken = solve_problem(capacity, items)
+    
+    # prepare the solution in the specified output format
+    output_data = format_result(value, taken)
+    return output_data
+
+
+def solve_problem(capacity, items):
     # a trivial algorithm for filling the knapsack
     # it takes items in-order until the knapsack is full
     value = 0
@@ -27,10 +36,8 @@ def solve_it(input_data):
             taken[item.index] = 1
             value += item.value
             weight += item.weight
-    
-    # prepare the solution in the specified output format
-    output_data = format_result(value, taken)
-    return output_data
+
+    return value, taken
 
 
 def parse_input(input_data):

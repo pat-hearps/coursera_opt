@@ -29,8 +29,7 @@ def solve_it(input_data):
             weight += item.weight
     
     # prepare the solution in the specified output format
-    output_data = str(value) + ' ' + str(0) + '\n'
-    output_data += ' '.join(map(str, taken))
+    output_data = format_result(value, taken)
     return output_data
 
 
@@ -49,6 +48,12 @@ def parse_input(input_data):
         parts = line.split()
         items.append(Item(i-1, int(parts[0]), int(parts[1])))
     return capacity, items
+
+
+def format_result(value, taken):
+    output_data = str(value) + ' ' + str(0) + '\n'
+    output_data += ' '.join(map(str, taken))
+    return output_data
 
 
 if __name__ == '__main__':

@@ -2,6 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from collections import namedtuple
+from pprint import pformat
+
+from src.utils.log_config import get_logger
+
+logger = get_logger(__name__)
+
 Item = namedtuple("Item", ['index', 'value', 'weight'])
 
 def solve_it(input_data):
@@ -20,6 +26,8 @@ def solve_it(input_data):
         line = lines[i]
         parts = line.split()
         items.append(Item(i-1, int(parts[0]), int(parts[1])))
+
+    logger.info(f"Items:\n{pformat(items)}")
 
     # a trivial algorithm for filling the knapsack
     # it takes items in-order until the knapsack is full
@@ -45,7 +53,8 @@ if __name__ == '__main__':
         file_location = sys.argv[1].strip()
         with open(file_location, 'r') as input_data_file:
             input_data = input_data_file.read()
-        print(solve_it(input_data))
+        filename = file_location.split('/')[-1]
+        print(f"Result for {filename} =\n", solve_it(input_data))
     else:
         print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/ks_4_0)')
 

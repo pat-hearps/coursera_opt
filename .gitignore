@@ -18,6 +18,8 @@ Pipfile.lock
 
 # folders
 data/
+figures/
+notebooks/
 
 
 # filetypes

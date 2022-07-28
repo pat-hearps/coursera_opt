@@ -39,7 +39,7 @@ def solve_problem(capacity, items):
 
     for item in items:
         if weight + item.weight <= capacity:
-            taken[item.index] = 1
+            taken[item.idx] = 1
             value += item.value
             weight += item.weight
 

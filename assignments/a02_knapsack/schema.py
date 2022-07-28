@@ -2,7 +2,7 @@ import dataclasses as dc
 
 @dc.dataclass
 class Item():
-    index: int
+    idx: int
     value: int
     weight: int
     density: float = dc.field(init=False)

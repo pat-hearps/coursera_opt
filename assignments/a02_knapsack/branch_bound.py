@@ -15,7 +15,8 @@ def depth_first(items: list[Item], capacity: int):
     
     df = pd.DataFrame(list(map(dc.asdict, taken)))
 
-    return ranked
+
+    return [Item(**r) for r in df[['idx', 'value', 'weight']].to_dict('records')]
 
 
 def rank_by_density(items: list[Item]) -> list[Item]:

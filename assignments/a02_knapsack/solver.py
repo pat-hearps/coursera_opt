@@ -3,6 +3,7 @@
 
 from pprint import pformat
 
+from assignments.a02_knapsack.branch_bound import depth_first
 from assignments.a02_knapsack.schema import Item
 from src.utils.directory import DIR
 from src.utils.log_config import get_logger
@@ -19,6 +20,8 @@ def solve_it(input_data):
     capacity, items = parse_input(input_data)
     logger.info(f"Items:\n{pformat(items)}")
 
+    ranked = depth_first(items, capacity)
+    logger.info(f"Ranked items:\n{pformat(ranked)}")
     # run an algorithm to solve the problem, key work goes into this function
     value, taken = solve_problem(capacity, items)
     

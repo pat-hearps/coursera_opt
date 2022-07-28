@@ -1,0 +1,34 @@
+# local working
+.ipynb_checkpoints
+__pycache__
+*_cache
+.vscode
+.amlignore
+.amlignore.amltmp
+.env
+.env*
+
+# virtual envs
+.venv
+.venv*
+.v*
+
+Pipfile
+Pipfile.lock
+
+# folders
+data/
+
+
+# filetypes
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.log
+
+#files
+config/db_config.json
+env
+
+_coursera

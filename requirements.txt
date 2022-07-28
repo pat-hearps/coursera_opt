@@ -1,0 +1,12 @@
+wheel
+
+Cython
+numba
+# can use intel-specific libraries for greater speed if on intel-chip machine
+intel-numpy
+jupyterlab
+pandas
+pyarrow
+intel-scipy
+# scikit-learn
+# scikit-learn-intelex

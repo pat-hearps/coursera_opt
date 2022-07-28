@@ -33,7 +33,7 @@ df_results.to_parquet(DIR.DATA.RESULTS / "results.parquet")
 
 # src code folders
 DIR.SRC = DIR / "src"
-DIR.ASSIGN = DIR.SRC / "assignments"
+DIR.ASSIGN = DIR / "assignments"
 
 # data folder with standard subfolders (should be gitignored)
 DIR.DATA = DIR / "data"

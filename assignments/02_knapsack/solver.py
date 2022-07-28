@@ -53,10 +53,9 @@ def parse_input(input_data):
 
     items = []
 
-    for i in range(1, item_count+1):
-        line = lines[i]
-        parts = line.split()
-        items.append(Item(i-1, int(parts[0]), int(parts[1])))
+    for i, line in enumerate(lines[1:-1]):
+        itm_value, itm_weight = map(int, line.split())
+        items.append(Item(i+1, itm_value, itm_weight))
     return capacity, items
 
 

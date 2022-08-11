@@ -73,6 +73,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         file_location = sys.argv[1].strip()
         filename = file_location.split('/')[-1]
+        file_location = DATA_DIR / filename
         
     else:
         logger.info("Using default input file ks_4_0")

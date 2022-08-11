@@ -42,26 +42,25 @@ def rank_by_density(items: list[Item]) -> list[Item]:
     return np.array(sorted(items, key=lambda item: item.density, reverse=True))
 
 
-def relaxed_integer(items: list[Item], capacity: int) -> int:
-    i, best_weight, best_value = 0, 0, 0
-    taken = []
-    while best_weight <= capacity:
+def relaxed_integer(items: list[Item], capacity: int, chosen_weight: float = 0, chosen_value: float = 0) -> int:
+    i, taken = 0, []
+    while chosen_weight <= capacity:
         itm = items[i]
-        if best_weight + itm.weight <= capacity:
+        if chosen_weight + itm.weight <= capacity:
             logger.debug(f"Adding item {itm} to best case selection")
             taken.append(itm)
-            best_weight += itm.weight
-            best_value += itm.value
+            chosen_weight += itm.weight
+            chosen_value += itm.value
             i += 1
         else:
-            remaining_weight = capacity - best_weight
+            remaining_weight = capacity - chosen_weight
             frac_to_take = remaining_weight / itm.weight
             logger.debug(f"Can only take {round(frac_to_take, 2)} fraction of item {itm} as final addition to best case selection")
-            best_weight += frac_to_take * itm.weight
-            best_value += frac_to_take * itm.value
+            chosen_weight += frac_to_take * itm.weight
+            chosen_value += frac_to_take * itm.value
             taken.append(itm)
             break
         
-    return best_value, best_weight, taken
+    return chosen_value, chosen_weight, taken
 
 

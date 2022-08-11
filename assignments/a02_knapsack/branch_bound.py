@@ -26,7 +26,7 @@ def depth_first(items: list[Item], capacity: int):
         value_if_chosen = df.loc[mask_choices, 'value'].sum()
 
         if weight_if_chosen > capacity:
-            logger.debug(f"Item {i} / wgt={itm_wgt} is too heavy, skipping")
+            logger.debug(f"Skipping item {i} / wgt={itm_wgt}, heavier than remaining {remaining_weight}")
             mask_choices[i] = False  # reset to not choose this item
         else:
             remaining_weight = capacity - weight_if_chosen

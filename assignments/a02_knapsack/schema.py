@@ -8,4 +8,4 @@ class Item():
     density: float = dc.field(init=False)
 
     def __post_init__(self):
-        self.density = round(self.value / self.weight, 4)
+        self.density = self.value / self.weight

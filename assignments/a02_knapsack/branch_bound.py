@@ -1,5 +1,6 @@
 import dataclasses as dc
 
+import numpy as np
 import pandas as pd
 
 from assignments.a02_knapsack.schema import Item
@@ -38,7 +39,7 @@ def depth_first(items: list[Item], capacity: int):
 
 
 def rank_by_density(items: list[Item]) -> list[Item]:
-    return sorted(items, key=lambda item: item.density, reverse=True)
+    return np.array(sorted(items, key=lambda item: item.density, reverse=True))
 
 
 def relaxed_integer(items: list[Item], capacity: int) -> int:

@@ -14,8 +14,7 @@ def depth_first(items: list[Item], capacity: int):
     best_value, best_weight, taken = relaxed_integer(ranked, capacity)
     logger.info(f"Best possible value with int->float relaxation: value={best_value}, weight={best_weight}; {len(taken)} items of indexes={sorted([i.idx for i in taken])}")
     
-    df = pd.DataFrame(list(map(dc.asdict, items)))
-    df = df.sort_values('density', ascending=False).reset_index(drop=True)
+    df = pd.DataFrame(list(map(dc.asdict, ranked)))
 
     mask_choices = [False] * len(df)  # start with nothing chosen
     remaining_weight = capacity  # gets whittled down as we loop through

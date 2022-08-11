@@ -10,8 +10,9 @@ logger = get_logger(__name__, level="DEBUG")
 
 def depth_first(items: list[Item], capacity: int):
     ranked = rank_by_density(items)
+    # first just find best possible solution if we ignore integer constraints
     best_value, best_weight, taken = relaxed_integer(ranked, capacity)
-    logger.info(f"Best possible value with int->float relaxation: value={best_value}, weight={best_weight}")
+    logger.info(f"Best possible value with int->float relaxation: value={best_value}, weight={best_weight}; {len(taken)} items of indexes={sorted([i.idx for i in taken])}")
     
     df = pd.DataFrame(list(map(dc.asdict, items)))
     df = df.sort_values('density', ascending=False).reset_index(drop=True)
@@ -32,7 +33,7 @@ def depth_first(items: list[Item], capacity: int):
             remaining_weight = capacity - weight_if_chosen
             logger.debug(f"Remaining weight: {remaining_weight}")
 
-        logger.info(f"current:\n{df.loc[best_choices,:]}")
+        logger.debug(f"current:\n{df.loc[best_choices,:]}")
 
 
 
@@ -51,7 +52,7 @@ def relaxed_integer(items: list[Item], capacity: int) -> int:
     while best_weight <= capacity:
         itm = items[i]
         if best_weight + itm.weight <= capacity:
-            logger.debug(f"Adding item {itm}")
+            logger.debug(f"Adding item {itm} to best case selection")
             taken.append(itm)
             best_weight += itm.weight
             best_value += itm.value
@@ -59,7 +60,7 @@ def relaxed_integer(items: list[Item], capacity: int) -> int:
         else:
             remaining_weight = capacity - best_weight
             frac_to_take = remaining_weight / itm.weight
-            logger.debug(f"Can only take {round(frac_to_take, 2)} fraction of item {itm}")
+            logger.debug(f"Can only take {round(frac_to_take, 2)} fraction of item {itm} as final addition to best case selection")
             best_weight += frac_to_take * itm.weight
             best_value += frac_to_take * itm.value
             taken.append(itm)

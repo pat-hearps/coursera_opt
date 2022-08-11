@@ -18,7 +18,7 @@ def solve_it(input_data):
 
     # parse file into useable data
     capacity, items = parse_input(input_data)
-    logger.info(f"Items:\n{pformat(items)}")
+    logger.info(f"Max Capacity: {capacity}\nItems:\n{pformat(items)}")
 
     ranked = depth_first(items, capacity)
     logger.info(f"Ranked items:\n{pformat(ranked)}")

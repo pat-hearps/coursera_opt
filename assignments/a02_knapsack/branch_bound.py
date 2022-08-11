@@ -17,29 +17,25 @@ def depth_first(items: list[Item], capacity: int):
     df = pd.DataFrame(list(map(dc.asdict, items)))
     df = df.sort_values('density', ascending=False).reset_index(drop=True)
 
-    best_choices = [False] * len(df)  # start with nothing chosen
-    remaining_weight = capacity
+    mask_choices = [False] * len(df)  # start with nothing chosen
+    remaining_weight = capacity  # gets whittled down as we loop through
 
-    for i, (itm_val, itm_wgt) in df[['value', 'weight']].iterrows():
-        best_choices[i] = True
+    for i, (idx, itm_val, itm_wgt) in df[['idx', 'value', 'weight']].iterrows():
+        mask_choices[i] = True  # temporarily choose this item
 
-        weight_if_chosen = df.loc[best_choices, 'weight'].sum()
-        value_if_chosen = df.loc[best_choices, 'value'].sum()
+        weight_if_chosen = df.loc[mask_choices, 'weight'].sum()
+        value_if_chosen = df.loc[mask_choices, 'value'].sum()
 
         if weight_if_chosen > capacity:
-            logger.debug(f"Item {i} /{itm_wgt} is too heavy, skipping")
-            best_choices[i] = False
+            logger.debug(f"Item {i} / wgt={itm_wgt} is too heavy, skipping")
+            mask_choices[i] = False  # reset to not choose this item
         else:
             remaining_weight = capacity - weight_if_chosen
-            logger.debug(f"Remaining weight: {remaining_weight}")
+            logger.debug(f"Item {idx} added. Remaining weight: {remaining_weight}")
 
-        logger.debug(f"current:\n{df.loc[best_choices,:]}")
+        logger.debug(f"current:\n{df.loc[mask_choices,:]}")
 
-
-
-
-
-    return [Item(**r) for r in df.loc[best_choices,['idx', 'value', 'weight']].to_dict('records')]
+    return [Item(**r) for r in df.loc[mask_choices,['idx', 'value', 'weight']].to_dict('records')]
 
 
 def rank_by_density(items: list[Item]) -> list[Item]:

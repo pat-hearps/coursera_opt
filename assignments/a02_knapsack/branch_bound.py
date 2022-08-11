@@ -23,8 +23,8 @@ def depth_first(items: list[Item], capacity: int):
     for i, (idx, itm_val, itm_wgt) in df[['idx', 'value', 'weight']].iterrows():
         mask_choices[i] = True  # temporarily choose this item
 
-        weight_if_chosen = df.loc[mask_choices, 'weight'].sum()
-        value_if_chosen = df.loc[mask_choices, 'value'].sum()
+        weight_if_chosen, value_if_chosen = df.loc[mask_choices, ['value', 'weight']].sum()
+
 
         if weight_if_chosen > capacity:
             logger.debug(f"Skipping item {i} / wgt={itm_wgt}, heavier than remaining {remaining_weight}")

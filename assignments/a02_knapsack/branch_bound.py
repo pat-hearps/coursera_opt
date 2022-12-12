@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 
 from assignments.a02_knapsack.schema import Item
-from src.utils.log_config import get_logger
+from src.utils.log_config import get_logger, VERBOSE
 
-logger = get_logger(__name__, level="DEBUG")
+logger = get_logger(__name__, level="VERBOSE")
 
 
 def depth_first(items: list[Item], capacity: int):
@@ -19,16 +19,22 @@ def depth_first(items: list[Item], capacity: int):
 
     mask_choices = [False] * len(df)  # start with nothing chosen
     remaining_weight = capacity  # gets whittled down as we loop through
+    best_estimate = best_value  # gets whittled down as we loop through
 
     for i, (idx, itm_val, itm_wgt) in df[['idx', 'value', 'weight']].iterrows():
         mask_choices[i] = True  # temporarily choose this item
 
         weight_if_chosen, value_if_chosen = df.loc[mask_choices, ['value', 'weight']].sum()
 
+        # best_remaining_value = 
 
         if weight_if_chosen > capacity:
             logger.debug(f"Skipping item {i} / wgt={itm_wgt}, heavier than remaining {remaining_weight}")
             mask_choices[i] = False  # reset to not choose this item
+
+        elif value_if_chosen < best_estimate:
+            logger.debug(f"Skipping item {i} / val={itm_val} is too cheap, skipping")
+            mask_choices[i] = False
         else:
             remaining_weight = capacity - weight_if_chosen
             logger.debug(f"Item {idx} added. Remaining weight: {remaining_weight}")
@@ -44,6 +50,8 @@ def rank_by_density(items: list[Item]) -> list[Item]:
 
 def relaxed_integer(items: list[Item], capacity: int, chosen_weight: float = 0, chosen_value: float = 0) -> int:
     i, taken = 0, []
+    if chosen_weight or chosen_value:
+        logger.log(VERBOSE, f"chosen weight={chosen_weight}, chosen value={chosen_value}")
     while chosen_weight <= capacity:
         itm = items[i]
         if chosen_weight + itm.weight <= capacity:
@@ -51,6 +59,7 @@ def relaxed_integer(items: list[Item], capacity: int, chosen_weight: float = 0, 
             taken.append(itm)
             chosen_weight += itm.weight
             chosen_value += itm.value
+            logger.log(VERBOSE, f"chosen weight={chosen_weight}, chosen value={chosen_value}")
             i += 1
         else:
             remaining_weight = capacity - chosen_weight

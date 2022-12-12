@@ -8,6 +8,8 @@ from src.utils.directory import DIR
 LOG_FORMAT = "%(levelname)-5s | %(asctime)s | %(module)s:%(lineno)-3s | %(message)s"
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
+VERBOSE = 5
+logging.addLevelName(VERBOSE, "VERBOSE")
 
 def get_logger(
     name: str, level: Union[str, int] = logging.INFO, log_file: Path = DIR.DATA.LOGS / "logs.log"

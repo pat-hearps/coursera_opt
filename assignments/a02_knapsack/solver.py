@@ -14,7 +14,7 @@ logger = get_logger(__name__)
 
 
 
-def solve_it(input_data):
+def solve_it(input_data: str):
 
     # parse file into useable data
     capacity, items = parse_input(input_data)
@@ -46,7 +46,8 @@ def solve_problem(capacity, items):
     return value, taken
 
 
-def parse_input(input_data):
+def parse_input(input_data: str) -> tuple[int, list[Item]]:
+    """input_data is one large string of entire file contents. We split and turn into list of Items."""
     # parse the input
     lines = input_data.split('\n')
 

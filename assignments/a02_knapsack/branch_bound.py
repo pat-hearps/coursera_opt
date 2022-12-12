@@ -9,7 +9,7 @@ from src.utils.log_config import get_logger, VERBOSE
 logger = get_logger(__name__, level="VERBOSE")
 
 
-def depth_first(items: list[Item], capacity: int):
+def depth_first(items: list[Item], capacity: int) -> list[Item]:
     ranked = rank_by_density(items)
     # first just find best possible solution if we ignore integer constraints
     best_value, best_weight, taken = relaxed_integer(ranked, capacity)

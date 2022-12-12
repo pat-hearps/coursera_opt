@@ -3,10 +3,12 @@ wheel
 Cython
 numba
 # can use intel-specific libraries for greater speed if on intel-chip machine
-intel-numpy
+# intel-numpy
+numpy
 jupyterlab
 pandas
 pyarrow
-intel-scipy
+# intel-scipy
+scipy
 # scikit-learn
 # scikit-learn-intelex

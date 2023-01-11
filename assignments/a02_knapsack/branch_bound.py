@@ -8,6 +8,17 @@ from src.utils.log_config import get_logger, VERBOSE
 
 logger = get_logger(__name__, level="VERBOSE")
 
+"""
+    each tree node is a an assessment of the scenario if the current single item in question is taken or not
+
+    at each node, we need to ask 'if we decide to keep/take item X, considering the prior history further up the tree':
+    - can we fit it in the knapsack? if not, it's infeasible, stop
+    - what is the current value of the knapsack?
+    - what is the best possible total value at the end of the tree if we decide to/not take this item?
+       if this best possible value is less than the best actual value we've found so far, stop
+    -> otherwise, take the item and continue down the tree
+
+    """
 
 def depth_first(items: list[Item], capacity: int):
     ranked = rank_by_density(items)
@@ -19,7 +30,17 @@ def depth_first(items: list[Item], capacity: int):
 
     mask_choices = [False] * len(df)  # start with nothing chosen
     remaining_weight = capacity  # gets whittled down as we loop through
-    best_estimate = best_value  # gets whittled down as we loop through
+    best_estimate = 0  # gets improved as we loop through
+
+    for i, (idx, itm_val, itm_wgt) in df[['idx', 'value', 'weight']].iterrows():
+        mask_choices = downwards_traverse(capacity, df, mask_choices, remaining_weight, best_estimate)
+        # remaining_estimate = relaxed_integer()
+        print(mask_choices)
+
+    return [Item(**r) for r in df.loc[mask_choices,['idx', 'value', 'weight']].to_dict('records')]
+
+
+def downwards_traverse(capacity, df, mask_choices, remaining_weight, best_estimate):
 
     for i, (idx, itm_val, itm_wgt) in df[['idx', 'value', 'weight']].iterrows():
         mask_choices[i] = True  # temporarily choose this item
@@ -39,12 +60,13 @@ def depth_first(items: list[Item], capacity: int):
             remaining_weight = capacity - weight_if_chosen
             logger.debug(f"Item {idx} added. Remaining weight: {remaining_weight}")
 
-        logger.debug(f"current:\n{df.loc[mask_choices,:]}")
-
-    return [Item(**r) for r in df.loc[mask_choices,['idx', 'value', 'weight']].to_dict('records')]
+    logger.debug(f"current:\n{df.loc[mask_choices,:]}")
+    
+    return mask_choices
 
 
 def rank_by_density(items: list[Item]) -> list[Item]:
+    # TODO should we also rank by weight for items where density is identical? Take smallest?
     return np.array(sorted(items, key=lambda item: item.density, reverse=True))
 
 

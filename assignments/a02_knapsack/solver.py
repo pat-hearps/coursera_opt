@@ -20,30 +20,12 @@ def solve_it(input_data: str):
     capacity, items = parse_input(input_data)
     logger.info(f"Max Capacity: {capacity}\nItems:\n{pformat(items)}")
 
-    ranked = depth_first(items, capacity)
-    logger.info(f"Ranked items:\n{pformat(ranked)}")
-    # run an algorithm to solve the problem, key work goes into this function
-    value, taken = solve_problem(capacity, items)
+    value, taken = depth_first(items, capacity)
+    logger.info(f"Ranked items:\n{pformat(taken)}")
     
     # prepare the solution in the specified output format
     output_data = format_result(value, taken)
     return output_data
-
-
-def solve_problem(capacity, items):
-    # a trivial algorithm for filling the knapsack
-    # it takes items in-order until the knapsack is full
-    value = 0
-    weight = 0
-    taken = [0]*len(items)
-
-    for item in items:
-        if weight + item.weight <= capacity:
-            taken[item.idx] = 1
-            value += item.value
-            weight += item.weight
-
-    return value, taken
 
 
 def parse_input(input_data: str) -> tuple[int, list[Item]]:
@@ -63,7 +45,7 @@ def parse_input(input_data: str) -> tuple[int, list[Item]]:
     return capacity, items
 
 
-def format_result(value, taken):
+def format_result(value: float, taken: list[int]):
     output_data = str(value) + ' ' + str(0) + '\n'
     output_data += ' '.join(map(str, taken))
     return output_data

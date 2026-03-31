@@ -1,4 +1,5 @@
 import dataclasses as dc
+from pprint import pformat
 
 import numpy as np
 import pandas as pd
@@ -9,7 +10,7 @@ from src.utils.log_config import get_logger, VERBOSE
 logger = get_logger(__name__, level="VERBOSE")
 
 
-def depth_first(items: list[Item], capacity: int) -> list[Item]:
+def depth_first(items: list[Item], capacity: int) -> tuple[float, list[int]]:
     ranked = rank_by_density(items)
     # first just find best possible solution if we ignore integer constraints
     best_value, best_weight, taken = relaxed_integer(ranked, capacity)
@@ -41,7 +42,15 @@ def depth_first(items: list[Item], capacity: int) -> list[Item]:
 
         logger.debug(f"current:\n{df.loc[mask_choices,:]}")
 
-    return [Item(**r) for r in df.loc[mask_choices,['idx', 'value', 'weight']].to_dict('records')]
+    df_result = df.loc[mask_choices,['idx', 'value', 'weight']]
+    total_value = df_result['value'].sum()
+    total_weight = df_result['weight'].sum()
+    logger.info(f"Solution chose {len(df_result)} items with\ntotal value =  {total_value}\ntotal weight = {total_weight}\nChosen indices:\n{pformat(df_result['idx'].tolist())}")
+
+    chosen_indices = set(df_result['idx'])
+    mask_taken = [1 if i in chosen_indices else 0 for i in range(1, len(items) + 1)]
+
+    return total_value, mask_taken
 
 
 def rank_by_density(items: list[Item]) -> list[Item]:
